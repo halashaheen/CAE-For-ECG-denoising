@@ -9,9 +9,7 @@ This repository contains a PyTorch implementation of a 1D Convolutional Autoenco
 * [Project Overview](https://www.google.com/search?q=%23project-overview)
 * [Dataset Architecture](https://www.google.com/search?q=%23dataset-architecture)
 * [Model Architecture](https://www.google.com/search?q=%23model-architecture)
-* [Project Timeline](https://www.google.com/search?q=%23project-timeline)
 * [Installation](https://www.google.com/search?q=%23installation)
-* [Usage Workflow](https://www.google.com/search?q=%23usage-workflow)
 * [Evaluation Metrics & Results](https://www.google.com/search?q=%23evaluation-metrics--results)
 * [Acknowledgments & References](https://www.google.com/search?q=%23acknowledgments--references)
 
@@ -81,37 +79,6 @@ Reconstructed Vector [1, 2048] ── (Final Denoised Signal Output)
 
 ```
 
----
-
-## Project Timeline
-
-The development cycle of this project was structured across a dedicated operational timeline:
-
-* **Week 1: Requirement Gathering & Library Setup**
-* Configured development environments and installed dependencies (`wfdb`, `torchinfo`).
-* Verified local/cloud GPU hardware capabilities for handling tensor distributions.
-
-
-* **Week 2: Data Engineering & Pipeline Design**
-* Constructed data ingestion utilities to download and parse PhysioNet data streams.
-* Implemented standard normalizers, windowing segmentation algorithms, and multi-patient splitting protocols.
-
-
-* **Week 3: Noise Mathematical Modelling**
-* Engineered noise infusion pipelines using mathematical SNR definitions.
-* Validated noisy data generation routines blending random selections of Baseline Wander and Muscle Artifacts across the fixed target decibel levels.
-
-
-* **Week 4: Architecture Assembly & Optimization**
-* Designed 1D autoencoder structural topologies using PyTorch deep-learning classes.
-* Integrated downsampling max-pooling mechanics and matching reconstruction upsampling blocks.
-
-
-* **Week 5: Training & Comparative Validation**
-* Executed comparative training experiments across structural network designs (`SimpleCAE` vs. `ResStackCAE`).
-* Monitored peak-weighted Mean Squared Error (MSE) loss metrics over a collection of training epochs using adaptive optimization rules.
-
-
 
 ---
 
@@ -128,55 +95,6 @@ pip install wfdb torchinfo
 * `wfdb`: Waveform Database software package used to read native PhysioNet records directly.
 * `torchinfo`: Provides structural printouts of deep network dimensions and weight parameters.
 
----
-
-## Usage Workflow
-
-### 1. Ingestion and Noise Augmentation
-
-The dataset generation script loads standard clean records and appends synthetic combinations of real-world clinical noise artifacts:
-
-```python
-import numpy as np
-import wfdb
-from data_loader import load_ecg_record, load_noise_signals, generate_noisy_ecg
-
-# Load standard datasets
-clean_signal = load_ecg_record('100')
-bw_noise, ma_noise = load_noise_signals()
-
-# Augment clean segment with noise at a fixed SNR level (e.g., 1.25 dB)
-noisy_seg, target_db, actual_db, mode = generate_noisy_ecg(
-    clean_signal[0:2048], bw_noise, ma_noise, target_snr_levels=[1.25]
-)
-print(f"Generated {mode} Noise at actual SNR: {actual_db:.2f} dB")
-
-```
-
-### 2. Executing Inference Evaluation
-
-To execute inference using a saved model checkpoint, load the structural model file and run a feedforward pass over incoming data arrays:
-
-```python
-import torch
-from architectures import ResStackCAE
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-# Initialize the network and load saved weights
-model = ResStackCAE().to(device)
-model.load_state_dict(torch.load("Saved_Models/ResStackCAE_best.pt"))
-model.eval()
-
-# Prepare incoming batch segment (Batch, Channels, Window Length)
-noisy_input_tensor = torch.randn(1, 1, 2048).to(device)
-
-with torch.no_grad():
-    denoised_output_tensor = model(noisy_input_tensor)
-    
-print("Signal successfully filtered:", denoised_output_tensor.shape)
-
-```
 
 ---
 
