@@ -76,7 +76,7 @@ To eliminate patient-specific data leakage, dataset records are partitioned expl
 ### 1D Convolutional Autoencoder (CAE)
 The denoising core consists of a streamlined encoder-decoder network. The encoder compresses the noisy `(2048, 1)` array into a low-dimensional bottleneck block, stripping stochastic artifacts. Skip Connections (SC) route early high-resolution feature maps directly to symmetric decoder blocks to combat over-smoothing and restore the sharp physiological slopes of the QRS transitions.
 
-![alt text](image.png)
+![alt text](Figures/ECG_CAE_Architecture.png)
 
 
 #### Convolutional Block Details (`StandardBlock`):
@@ -88,7 +88,7 @@ The classification system reuses the pre-trained encoder weights of the 1D CAE. 
 
 $$\text{Linear}(64 \rightarrow 128) \rightarrow \text{ReLU} \rightarrow \text{Dropout}(0.3) \rightarrow \text{Linear}(128 \rightarrow 3) \rightarrow \text{Output Logits}$$
 
-![alt text](image-1.png)
+![alt text](Figures/ECG_Classifier_Architecture.png)
 
 ---
 
