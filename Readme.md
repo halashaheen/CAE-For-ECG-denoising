@@ -76,6 +76,8 @@ To eliminate patient-specific data leakage, dataset records are partitioned expl
 ### 1D Convolutional Autoencoder (CAE)
 The denoising core consists of a streamlined encoder-decoder network. The encoder compresses the noisy `(2048, 1)` array into a low-dimensional bottleneck block, stripping stochastic artifacts. Skip Connections (SC) route early high-resolution feature maps directly to symmetric decoder blocks to combat over-smoothing and restore the sharp physiological slopes of the QRS transitions.
 
+![alt text](image.png)
+
 
 #### Convolutional Block Details (`StandardBlock`):
 The network maps structural properties via nested 1D Convolutions ($k=3$, stride=1, padding=1), tracking batch normalization steps, and regularized through selective Dropout ($0.1$) layers inside the inner layers:
@@ -85,6 +87,8 @@ The network maps structural properties via nested 1D Convolutions ($k=3$, stride
 The classification system reuses the pre-trained encoder weights of the 1D CAE. Latent space sequences extracted from a three-beat contextual matrix `(N, 64, 135)` pass through Global Average Pooling (GAP) down to `(N, 64, 1)`, are flattened to `(N, 64)`, and feed into a fully-connected Multilayer Perceptron (MLP) head:
 
 $$\text{Linear}(64 \rightarrow 128) \rightarrow \text{ReLU} \rightarrow \text{Dropout}(0.3) \rightarrow \text{Linear}(128 \rightarrow 3) \rightarrow \text{Output Logits}$$
+
+![alt text](image-1.png)
 
 ---
 
@@ -140,6 +144,6 @@ Tested on the distinct intra-patient validation splits of the MIT-BIH Arrhythmia
 
 This framework was designed, implemented, and audited as part of the course **CSE672: Machine Learning**.
 
-* **Authors:** Hala M. Shaheen, Huda M. Abdelhakim, and Mahmoud I. Khalil
+* **Authors:** Hala M. Shaheen, Huda M. Abdelhakim.
 * **Academic Supervision:** Dr. Hazem M. Abbas, Ph.D., and Dr. Mahmoud I. Khalil, Ph.D.
 * **Institution:** Computer and Systems Engineering Department, Faculty of Engineering, Ain Shams University, Cairo, Egypt.
