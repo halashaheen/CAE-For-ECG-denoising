@@ -101,7 +101,7 @@ Models can be evaluated via two customized reconstruction loss methodologies:
    $$\mathcal{L}_{pw}(X_c, X_d) = \frac{\sum ((X_c - X_d)^t \cdot (X_c - X_d) \cdot C_p)}{N}$$
 
 2. **ECG Combined Loss ($\mathcal{L}_{Total}$):** A regularized multi-component target that aligns time, frequency, and morphological derivatives:
-   $`\mathcal{L}_{Total} = w_{mse}\mathcal{L}_{MSE} + w_{peak}\mathcal{L}_{PW} + w_{dist}\mathcal{L}_{Dist} + w_{freq}\mathcal{L}_{Freq}`$
+   $`\mathcal{L}_{Total} = w_{mse} \mathcal{L}_{MSE} + w_{peak} \mathcal{L}_{PW} + w_{dist} \mathcal{L}_{Dist} + w_{freq} \mathcal{L}_{Freq}`$
 
    * **Morphology Derivative Loss ($\mathcal{L}_{Dist}$):** Regulates sharp slope transitions using finite differences: $\Delta X_k = X_{k+1} - X_k$.
    * **Frequency Domain Loss ($\mathcal{L}_{Freq}$):** Enforces spectral consistency via Real FFT magnitude differentials ($|rFFT(X)_f|$).
